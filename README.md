@@ -13,6 +13,7 @@
 
 ### 配置需要爬取的抖音账号以及视频文件保存位置
 * 打开 ```config.py```文件,修改```USER_SEC_UID```和 ```SAVE_FOLDER```两个参数
+![img.png](images/img1.png)
 * ```USER_SEC_UID``` 表示用户的抖音账号ID，```SAVE_FOLDER``` 表示需要保存到的文件夹位置
 ---
 #### USER_SEC_UID 的获取方式
