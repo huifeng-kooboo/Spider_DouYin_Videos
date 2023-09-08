@@ -3,6 +3,7 @@ import requests
 import time
 import os
 import urllib.request
+import argparse
 
 from tools.util import get_current_time_format, generate_url_with_xbs, sleep_random
 from config import IS_SAVE, SAVE_FOLDER, USER_SEC_UID, IS_WRITE_TO_CSV, LOGIN_COOKIE, CSV_FILE_NAME
@@ -117,6 +118,14 @@ class DouYinUtil(object):
 
 
 if __name__ == '__main__':
+    import sys
+    params_list_size = len(sys.argv)
+    if params_list_size == 2:
+        USER_SEC_UID = sys.argv[1]
+    elif params_list_size == 3:
+        USER_SEC_UID = sys.argv[1]
+        SAVE_FOLDER = sys.argv[2]
+
     dy_util = DouYinUtil(sec_uid=USER_SEC_UID)
     all_video_list = dy_util.get_all_videos()
     for video_id in all_video_list:
