@@ -1,0 +1,54 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="41">
+            <item index="0" class="java.lang.String" itemvalue="PyAudio" />
+            <item index="1" class="java.lang.String" itemvalue="protobuf" />
+            <item index="2" class="java.lang.String" itemvalue="netifaces" />
+            <item index="3" class="java.lang.String" itemvalue="threadpoolctl" />
+            <item index="4" class="java.lang.String" itemvalue="joblib" />
+            <item index="5" class="java.lang.String" itemvalue="scikit-learn" />
+            <item index="6" class="java.lang.String" itemvalue="PyYAML" />
+            <item index="7" class="java.lang.String" itemvalue="pid" />
+            <item index="8" class="java.lang.String" itemvalue="motion-mocap-proxy" />
+            <item index="9" class="java.lang.String" itemvalue="numpy" />
+            <item index="10" class="java.lang.String" itemvalue="requests" />
+            <item index="11" class="java.lang.String" itemvalue="cython-common" />
+            <item index="12" class="java.lang.String" itemvalue="eventlet" />
+            <item index="13" class="java.lang.String" itemvalue="pyzmq" />
+            <item index="14" class="java.lang.String" itemvalue="numpy-quaternion" />
+            <item index="15" class="java.lang.String" itemvalue="moviepy" />
+            <item index="16" class="java.lang.String" itemvalue="Cython" />
+            <item index="17" class="java.lang.String" itemvalue="scipy" />
+            <item index="18" class="java.lang.String" itemvalue="keyboard" />
+            <item index="19" class="java.lang.String" itemvalue="raven" />
+            <item index="20" class="java.lang.String" itemvalue="opencv-python" />
+            <item index="21" class="java.lang.String" itemvalue="torch" />
+            <item index="22" class="java.lang.String" itemvalue="psutil" />
+            <item index="23" class="java.lang.String" itemvalue="python-socketio" />
+            <item index="24" class="java.lang.String" itemvalue="av" />
+            <item index="25" class="java.lang.String" itemvalue="matplotlib" />
+            <item index="26" class="java.lang.String" itemvalue="grpcio" />
+            <item index="27" class="java.lang.String" itemvalue="GPUtil" />
+            <item index="28" class="java.lang.String" itemvalue="py-xmov-face-tracker" />
+            <item index="29" class="java.lang.String" itemvalue="msgpack" />
+            <item index="30" class="java.lang.String" itemvalue="py-retargeting" />
+            <item index="31" class="java.lang.String" itemvalue="nodegraph" />
+            <item index="32" class="java.lang.String" itemvalue="Pillow" />
+            <item index="33" class="java.lang.String" itemvalue="mysqlclient" />
+            <item index="34" class="java.lang.String" itemvalue="digital_resource" />
+            <item index="35" class="java.lang.String" itemvalue="ttsa_xml_utils" />
+            <item index="36" class="java.lang.String" itemvalue="grpcio-tools" />
+            <item index="37" class="java.lang.String" itemvalue="gunicorn" />
+            <item index="38" class="java.lang.String" itemvalue="flower" />
+            <item index="39" class="java.lang.String" itemvalue="pysonic" />
+            <item index="40" class="java.lang.String" itemvalue="uwsgi" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
