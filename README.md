@@ -29,6 +29,13 @@
 
 ---
 
+### 更新说明
+* V1.0.1
+增加了命令行参数调用
+可以通过``` python .\main.py  MS4wLjABAAAAhvTbKCCsY4Yk3bYEbmewjUBL6UB5Qw0REMHflwqjWJ98mq0nyk5PFvgXukURQeKn D:/demo```来设置参数
+其中第一个参数为用户id, 第二个参数为默认保存位置
+
+
 ## 赞赏！！！
 * 如果对大家有帮助的话，可以扫码赞赏一下！
 <img src="https://ytouch-1258011219.cos.ap-nanjing.myqcloud.com/wechat_shoukuan.jpg" width = "300" height = "300"  />
