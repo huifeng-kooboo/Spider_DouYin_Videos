@@ -4,6 +4,7 @@ import time
 import os
 import urllib.request
 import argparse
+import pandas as pd
 
 from tools.util import get_current_time_format, generate_url_with_xbs, sleep_random
 from config import IS_SAVE, SAVE_FOLDER, USER_SEC_UID, IS_WRITE_TO_CSV, LOGIN_COOKIE, CSV_FILE_NAME
@@ -74,7 +75,7 @@ class DouYinUtil(object):
         if not os.path.exists(save_folder):
             os.mkdir(save_folder)
         real_file_name = f"{save_folder}/{file_name}"
-        print(f"下载url:{video_url}\n保存文件名:{real_file_name}")
+        #print(f"下载url:{video_url}\n保存文件名:{real_file_name}")
         if os.path.exists(real_file_name):
             os.remove(real_file_name)
         urllib.request.urlretrieve(video_url, real_file_name)
@@ -95,11 +96,13 @@ class DouYinUtil(object):
             'cover_url': 'http://www.baidu.com',  # 视频封面
             'publish_time': '',  # 发布日期
             'record_time': '记录日期',  # 更新日期
+            "preview_title":""
         }
         res_info = self.video_info_dict.get(video_id, None)
         if res_info is None:
             return default_response
         default_response['title'] = res_info['desc']
+        default_response["preview_title"]=res_info["preview_title"]
         create_time = res_info['create_time']
         local_time = time.localtime(create_time)
         local_time_str = time.strftime("%Y-%m-%d %H:%M:%S", local_time)
@@ -128,7 +131,20 @@ if __name__ == '__main__':
 
     dy_util = DouYinUtil(sec_uid=USER_SEC_UID)
     all_video_list = dy_util.get_all_videos()
+    csvVideos =[]
     for video_id in all_video_list:
         video_info = dy_util.get_video_detail_info(video_id)
         if video_info['is_video'] is True:
             dy_util.download_video(video_info['link'], f"{video_id}.mp4")
+        title = video_info["title"]
+        preview_title = video_info["preview_title"]
+        print(f"file:{video_id}.mp4,title:{title} , preview_title:{preview_title}")
+        video_info["video_id"]=f"id:{video_id}"
+        csvVideos.append(video_info)
+    data = pd.DataFrame(csvVideos)
+    csvHeaders = ["视频id","视频链接","是否为视频","标题","点赞数","评论数","视频封面","发布日期","更新日期","预览标题"]
+    data.to_csv(CSV_FILE_NAME, header=csvHeaders, index=False, mode='a+', encoding='utf-8')
+    try:
+        data.to_csv(CSV_FILE_NAME, header=False, index=False, mode='a+', encoding='utf-8')
+    except UnicodeEncodeError:
+        print("编码错误, 该数据无法写到文件中, 直接忽略该数据")
