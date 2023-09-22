@@ -58,6 +58,7 @@ class DouYinUtil(object):
                 self.stop_flag = True
             else:
                 self.cursor = user_info['max_cursor']
+                #self.stop_flag = True
             sleep_random()
         return self.videos_list
 
@@ -79,6 +80,39 @@ class DouYinUtil(object):
         if os.path.exists(real_file_name):
             os.remove(real_file_name)
         urllib.request.urlretrieve(video_url, real_file_name)
+        
+    def download_images(self,image_list:list,image_dir:str=None):
+        """
+        下载图片
+        :param image_list: 图片地址
+        :param file_name: 图片目录: 默认为空
+        :return:
+        """
+        if not self.is_save:
+            print("当前不需要保存")
+            return
+        
+        parent_folder = f"{self.save_folder}/{self.sec_uid}"
+        if not os.path.exists(parent_folder):
+            os.mkdir(parent_folder)
+        save_folder = f"{self.save_folder}/{self.sec_uid}/{image_dir}"
+        
+        print(f"save-dir:{save_folder}")
+        
+        num=1
+        if not os.path.exists(save_folder):
+            os.mkdir(save_folder)
+        for image_url in image_list:
+            num+=1
+            print(f"image_url:{image_url} {num}")
+            real_file_name = f"{save_folder}/{num}.jpeg"
+            print(f"下载url:{image_url}\n保存文件名:{real_file_name}")
+            if os.path.exists(real_file_name):
+                os.remove(real_file_name)
+            urllib.request.urlretrieve(image_url, real_file_name)
+        
+        
+      
 
     def get_video_detail_info(self, video_id: str):
         """
@@ -113,7 +147,7 @@ class DouYinUtil(object):
             default_response['cover_url'] = res_info["video"]["cover"]["url_list"][0]
             default_response['is_video'] = True
         else:
-            default_response['link'] = str(list(map(lambda x: x["url_list"][-1], res_info["images"])))
+            default_response['link'] = list(map(lambda x: x["url_list"][-1], res_info["images"]))
             default_response['is_video'] = False
         default_response['thumb_up_num'] = res_info['statistics']['admire_count']
         default_response['comment_num'] = res_info['statistics']['comment_count']
@@ -136,9 +170,12 @@ if __name__ == '__main__':
         video_info = dy_util.get_video_detail_info(video_id)
         if video_info['is_video'] is True:
             dy_util.download_video(video_info['link'], f"{video_id}.mp4")
+        if video_info["is_video"] is False:
+            dy_util.download_images(video_info["link"],f"{video_id}")
         title = video_info["title"]
         preview_title = video_info["preview_title"]
         print(f"file:{video_id}.mp4,title:{title} , preview_title:{preview_title}")
+        video_info["link"]=video_id
         video_info["video_id"]=f"id:{video_id}"
         csvVideos.append(video_info)
     data = pd.DataFrame(csvVideos)
