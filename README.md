@@ -10,6 +10,7 @@
 
 * 安装Python >= 3.6.8  [Python下载地址](https://www.python.org/)
 * ```pip install -r requirements.txt```
+* 需要安装node和npm 安装最新版本即可【之前忘记说了 害一些朋友没法用】
 
 ### 配置需要爬取的抖音账号以及视频文件保存位置
 * 打开 ```config.py```文件,修改```USER_SEC_UID```和 ```SAVE_FOLDER```两个参数
