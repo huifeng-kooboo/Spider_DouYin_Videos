@@ -8,6 +8,7 @@ import pandas as pd
 
 from tools.util import get_current_time_format, generate_url_with_xbs, sleep_random
 from config import IS_SAVE, SAVE_FOLDER, USER_SEC_UID, IS_WRITE_TO_CSV, LOGIN_COOKIE, CSV_FILE_NAME
+import requests
 
 
 class DouYinUtil(object):
@@ -58,7 +59,7 @@ class DouYinUtil(object):
                 self.stop_flag = True
             else:
                 self.cursor = user_info['max_cursor']
-                #self.stop_flag = True
+                # self.stop_flag = True
             sleep_random()
         return self.videos_list
 
@@ -76,12 +77,30 @@ class DouYinUtil(object):
         if not os.path.exists(save_folder):
             os.mkdir(save_folder)
         real_file_name = f"{save_folder}/{file_name}"
-        #print(f"下载url:{video_url}\n保存文件名:{real_file_name}")
+        print(f"下载url:{video_url}\n保存文件名:{real_file_name}")
         if os.path.exists(real_file_name):
             os.remove(real_file_name)
-        urllib.request.urlretrieve(video_url, real_file_name)
-        
-    def download_images(self,image_list:list,image_dir:str=None):
+
+        # 发送GET请求
+        headers_ = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
+            'Referer': video_url,
+        }
+        response = requests.get(video_url, stream=True, headers=headers_)
+
+        # 检查请求是否成功
+        if response.status_code == 200:
+            # 打开一个本地文件用于保存下载的视频
+            with open(real_file_name, 'wb') as f:
+                # 下载大文件需这样处理
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            print("下载完成")
+        else:
+            print("错误", response.status_code)
+        # urllib.request.urlretrieve(video_url, real_file_name)
+
+    def download_images(self, image_list: list, image_dir: str = None):
         """
         下载图片
         :param image_list: 图片地址
@@ -91,28 +110,25 @@ class DouYinUtil(object):
         if not self.is_save:
             print("当前不需要保存")
             return
-        
+
         parent_folder = f"{self.save_folder}/{self.sec_uid}"
         if not os.path.exists(parent_folder):
             os.mkdir(parent_folder)
         save_folder = f"{self.save_folder}/{self.sec_uid}/{image_dir}"
-        
+
         print(f"save-dir:{save_folder}")
-        
-        num=1
+
+        num = 1
         if not os.path.exists(save_folder):
             os.mkdir(save_folder)
         for image_url in image_list:
-            num+=1
+            num += 1
             print(f"image_url:{image_url} {num}")
             real_file_name = f"{save_folder}/{num}.jpeg"
             print(f"下载url:{image_url}\n保存文件名:{real_file_name}")
             if os.path.exists(real_file_name):
                 os.remove(real_file_name)
             urllib.request.urlretrieve(image_url, real_file_name)
-        
-        
-      
 
     def get_video_detail_info(self, video_id: str):
         """
@@ -130,13 +146,14 @@ class DouYinUtil(object):
             'cover_url': 'http://www.baidu.com',  # 视频封面
             'publish_time': '',  # 发布日期
             'record_time': '记录日期',  # 更新日期
-            "preview_title":""
+            "preview_title": ""
         }
         res_info = self.video_info_dict.get(video_id, None)
         if res_info is None:
             return default_response
         default_response['title'] = res_info['desc']
-        default_response["preview_title"]=res_info["preview_title"]
+        if res_info.get('preview_title') is not None:
+            default_response["preview_title"] = res_info["preview_title"]
         create_time = res_info['create_time']
         local_time = time.localtime(create_time)
         local_time_str = time.strftime("%Y-%m-%d %H:%M:%S", local_time)
@@ -156,6 +173,7 @@ class DouYinUtil(object):
 
 if __name__ == '__main__':
     import sys
+
     params_list_size = len(sys.argv)
     if params_list_size == 2:
         USER_SEC_UID = sys.argv[1]
@@ -165,23 +183,29 @@ if __name__ == '__main__':
 
     dy_util = DouYinUtil(sec_uid=USER_SEC_UID)
     all_video_list = dy_util.get_all_videos()
-    csvVideos =[]
+    csvVideos = []
     for video_id in all_video_list:
         video_info = dy_util.get_video_detail_info(video_id)
         if video_info['is_video'] is True:
+            print(f"video_link:{video_info['link']}")
             dy_util.download_video(video_info['link'], f"{video_id}.mp4")
         if video_info["is_video"] is False:
-            dy_util.download_images(video_info["link"],f"{video_id}")
+            dy_util.download_images(video_info["link"], f"{video_id}")
         title = video_info["title"]
         preview_title = video_info["preview_title"]
         print(f"file:{video_id}.mp4,title:{title} , preview_title:{preview_title}")
-        video_info["link"]=video_id
-        video_info["video_id"]=f"id:{video_id}"
+        video_info["link"] = video_id
+        video_info["video_id"] = f"id:{video_id}"
         csvVideos.append(video_info)
-    data = pd.DataFrame(csvVideos)
-    csvHeaders = ["视频id","视频链接","是否为视频","标题","点赞数","评论数","视频封面","发布日期","更新日期","预览标题"]
-    data.to_csv(CSV_FILE_NAME, header=csvHeaders, index=False, mode='a+', encoding='utf-8')
     try:
-        data.to_csv(CSV_FILE_NAME, header=False, index=False, mode='a+', encoding='utf-8')
-    except UnicodeEncodeError:
-        print("编码错误, 该数据无法写到文件中, 直接忽略该数据")
+        data = pd.DataFrame(csvVideos)
+        csvHeaders = ["视频id", "视频链接", "是否为视频", "标题", "点赞数", "评论数", "视频封面", "发布日期",
+                      "更新日期",
+                      "预览标题"]
+        data.to_csv(CSV_FILE_NAME, header=csvHeaders, index=False, mode='a+', encoding='utf-8')
+        try:
+            data.to_csv(CSV_FILE_NAME, header=False, index=False, mode='a+', encoding='utf-8')
+        except UnicodeEncodeError:
+            print("编码错误, 该数据无法写到文件中, 直接忽略该数据")
+    except Exception as e:
+        print(e)
