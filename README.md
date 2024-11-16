@@ -1,6 +1,7 @@
 # Spider_DouYin_Videos
 
 * 有需要开发需求可联系微信: ytouching (备注来意)
+* 接兼职开发，app开发的需求。有需要可联系
 
 大家也可以通过[腾讯云服务器](https://curl.qcloud.com/tTuWmDCs) 上去购买云服务器部署
 ---
