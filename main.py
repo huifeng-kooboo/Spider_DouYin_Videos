@@ -10,6 +10,13 @@ from tools.util import get_current_time_format, generate_url_with_xbs, sleep_ran
 from config import IS_SAVE, SAVE_FOLDER, USER_SEC_UID, IS_WRITE_TO_CSV, LOGIN_COOKIE, CSV_FILE_NAME
 import requests
 
+import logging
+
+# 配置日志
+logging.basicConfig(level=logging.DEBUG,filename='basic.log')
+
+# 创建日志器
+logger = logging.getLogger(__name__)
 
 class DouYinUtil(object):
 
@@ -20,6 +27,8 @@ class DouYinUtil(object):
         self.sec_uid = sec_uid
         self.is_save = IS_SAVE
         self.save_folder = SAVE_FOLDER
+        if not os.path.exists(self.save_folder):
+            os.mkdir(self.save_folder)
         self.is_write_to_csv = IS_WRITE_TO_CSV
         self.csv_name = CSV_FILE_NAME
         self.video_api_url = ''
@@ -71,13 +80,13 @@ class DouYinUtil(object):
         :return:
         """
         if not self.is_save:
-            print("当前不需要保存")
+            logger.info("当前不需要保存")
             return
         save_folder = f"{self.save_folder}/{self.sec_uid}"
         if not os.path.exists(save_folder):
             os.mkdir(save_folder)
         real_file_name = f"{save_folder}/{file_name}"
-        print(f"下载url:{video_url}\n保存文件名:{real_file_name}")
+        logger.info(f"下载url:{video_url}\n保存文件名:{real_file_name}")
         if os.path.exists(real_file_name):
             os.remove(real_file_name)
 
@@ -95,9 +104,9 @@ class DouYinUtil(object):
                 # 下载大文件需这样处理
                 for chunk in response.iter_content(chunk_size=8192):
                     f.write(chunk)
-            print("下载完成")
+            logger.info("下载完成")
         else:
-            print("错误", response.status_code)
+            logger.info("错误", response.status_code)
         # urllib.request.urlretrieve(video_url, real_file_name)
 
     def download_images(self, image_list: list, image_dir: str = None):
@@ -108,7 +117,7 @@ class DouYinUtil(object):
         :return:
         """
         if not self.is_save:
-            print("当前不需要保存")
+            logger.info("当前不需要保存")
             return
 
         parent_folder = f"{self.save_folder}/{self.sec_uid}"
@@ -116,16 +125,16 @@ class DouYinUtil(object):
             os.mkdir(parent_folder)
         save_folder = f"{self.save_folder}/{self.sec_uid}/{image_dir}"
 
-        print(f"save-dir:{save_folder}")
+        logger.info(f"save-dir:{save_folder}")
 
         num = 1
         if not os.path.exists(save_folder):
             os.mkdir(save_folder)
         for image_url in image_list:
             num += 1
-            print(f"image_url:{image_url} {num}")
+            logger.info(f"image_url:{image_url} {num}")
             real_file_name = f"{save_folder}/{num}.jpeg"
-            print(f"下载url:{image_url}\n保存文件名:{real_file_name}")
+            logger.info(f"下载url:{image_url}\n保存文件名:{real_file_name}")
             if os.path.exists(real_file_name):
                 os.remove(real_file_name)
             urllib.request.urlretrieve(image_url, real_file_name)
@@ -187,13 +196,13 @@ if __name__ == '__main__':
     for video_id in all_video_list:
         video_info = dy_util.get_video_detail_info(video_id)
         if video_info['is_video'] is True:
-            print(f"video_link:{video_info['link']}")
+            logger.info(f"video_link:{video_info['link']}")
             dy_util.download_video(video_info['link'], f"{video_id}.mp4")
         if video_info["is_video"] is False:
             dy_util.download_images(video_info["link"], f"{video_id}")
         title = video_info["title"]
         preview_title = video_info["preview_title"]
-        print(f"file:{video_id}.mp4,title:{title} , preview_title:{preview_title}")
+        logger.info(f"file:{video_id}.mp4,title:{title} , preview_title:{preview_title}")
         video_info["link"] = video_id
         video_info["video_id"] = f"id:{video_id}"
         csvVideos.append(video_info)
@@ -206,6 +215,6 @@ if __name__ == '__main__':
         try:
             data.to_csv(CSV_FILE_NAME, header=False, index=False, mode='a+', encoding='utf-8')
         except UnicodeEncodeError:
-            print("编码错误, 该数据无法写到文件中, 直接忽略该数据")
+            logger.info("编码错误, 该数据无法写到文件中, 直接忽略该数据")
     except Exception as e:
-        print(e)
+        logger.info(e)
