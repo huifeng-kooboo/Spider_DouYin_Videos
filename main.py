@@ -106,7 +106,7 @@ class DouYinUtil(object):
                     f.write(chunk)
             logger.info("下载完成")
         else:
-            logger.info("错误", response.status_code)
+            logger.info(f"错误{response.status_code}")
         # urllib.request.urlretrieve(video_url, real_file_name)
 
     def download_images(self, image_list: list, image_dir: str = None):
