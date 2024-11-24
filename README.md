@@ -1,5 +1,7 @@
 # Spider_DouYin_Videos
 
+* 用于爬取用户的所有视频！
+* 目前最有效的爬取抖音用户视频教程！
 * 有需要开发需求可联系微信: ytouching (备注来意)
 
 大家也可以通过[腾讯云服务器](https://curl.qcloud.com/tTuWmDCs) 上去购买云服务器部署
@@ -37,6 +39,7 @@
 ---
 
 ### 更新说明
+
 * V1.0.1
 增加了命令行参数调用
 可以通过``` python .\main.py  MS4wLjABAAAAhvTbKCCsY4Yk3bYEbmewjUBL6UB5Qw0REMHflwqjWJ98mq0nyk5PFvgXukURQeKn D:/demo```来设置参数
@@ -45,7 +48,10 @@
 
 ## 赞赏！！！
 * 如果对大家有帮助的话，可以扫码赞赏一下！
-<img src="https://ytouch-1258011219.cos.ap-nanjing.myqcloud.com/wechat_shoukuan.jpg" width = "300" height = "300"  />
+  <img src="https://ytouch-1258011219.cos.ap-nanjing.myqcloud.com/wechat_shoukuan.jpg" width = "300" height = "300"  />
+
+  <img src="https://ytouch-1258011219.cos.ap-nanjing.myqcloud.com/c79ec902062dc40c5ce41fef3bc6f3b.jpg">
 
 * 有爬虫需要可以加V：ytouching
+
 * Phone: 13824464121
