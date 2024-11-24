@@ -18,6 +18,7 @@ logging.basicConfig(level=logging.DEBUG)
 # 创建日志器
 logger = logging.getLogger(__name__)
 
+
 class DouYinUtil(object):
 
     def __init__(self, sec_uid: str):
@@ -182,6 +183,7 @@ class DouYinUtil(object):
 
 if __name__ == '__main__':
     import sys
+    logger.info("有问题请联系微信：ytouching （备注来意！！！！！！！！！！！！！！！！！！！！！）")
     params_list_size = len(sys.argv)
     if params_list_size == 2:
         USER_SEC_UID = sys.argv[1]
@@ -190,9 +192,12 @@ if __name__ == '__main__':
         SAVE_FOLDER = sys.argv[2]
 
     print(f"当前传入的参数：SEC_ID：{USER_SEC_UID}\n SAVE_FOLDER:{SAVE_FOLDER}")
+    if not os.path.exists(SAVE_FOLDER):
+        os.mkdir(SAVE_FOLDER)
 
     dy_util = DouYinUtil(sec_uid=USER_SEC_UID)
     all_video_list = dy_util.get_all_videos()
+    print(f"当前需要下载的视频列表数量为:{len(all_video_list)}")
     csvVideos = []
     for video_id in all_video_list:
         video_info = dy_util.get_video_detail_info(video_id)
