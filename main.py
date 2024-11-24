@@ -13,7 +13,7 @@ import requests
 import logging
 
 # 配置日志
-logging.basicConfig(level=logging.DEBUG,filename='basic.log')
+logging.basicConfig(level=logging.DEBUG)
 
 # 创建日志器
 logger = logging.getLogger(__name__)
@@ -182,13 +182,14 @@ class DouYinUtil(object):
 
 if __name__ == '__main__':
     import sys
-
     params_list_size = len(sys.argv)
     if params_list_size == 2:
         USER_SEC_UID = sys.argv[1]
     elif params_list_size == 3:
         USER_SEC_UID = sys.argv[1]
         SAVE_FOLDER = sys.argv[2]
+
+    print(f"当前传入的参数：SEC_ID：{USER_SEC_UID}\n SAVE_FOLDER:{SAVE_FOLDER}")
 
     dy_util = DouYinUtil(sec_uid=USER_SEC_UID)
     all_video_list = dy_util.get_all_videos()

@@ -1,3 +1,4 @@
+// Core-Check
 var window = null;
 
 function _0x5cd844(e) {

@@ -5,5 +5,5 @@ USER_SEC_UID = 'MS4wLjABAAAARNoBKYSGRQIYhuMsRfxej_R3hAni6YaGPGmSZmUs4FdaauHwPf6h
 IS_SAVE = True  # 是否需要保存视频文件 True:保存 ， False: 不保存
 SAVE_FOLDER = 'D:/save_video'  # 视频下载保存的文件夹地址[推荐写完整的路径]
 
-IS_WRITE_TO_CSV = False  # ToDo: 是否需要记录到CSV文件 False: 不保存，True:保存
+IS_WRITE_TO_CSV = True  # ToDo: 是否需要记录到CSV文件 False: 不保存，True:保存
 CSV_FILE_NAME = 'D:/demo.csv'  # ToDo: 保存到CSV的文件名
