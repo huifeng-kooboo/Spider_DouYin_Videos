@@ -1,5 +1,8 @@
 # Spider_DouYin_Videos
 
+- wechat: 如果有远程办公需求可扫码微信联系：
+  <img src="https://ytouch-1258011219.cos.ap-nanjing.myqcloud.com/person_wechat_own.jpg" width="200" height="300" />
+  
 * 用于爬取用户的所有视频！
 * 目前最有效的爬取抖音用户视频教程！
 * 有需要开发需求可联系微信: ytouching (备注来意)
