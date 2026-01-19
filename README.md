@@ -4,7 +4,7 @@
 [![Node.js Required](https://img.shields.io/badge/node-required-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## 项目简介
+## 项目简介 [给完star再走 别白嫖！！！]
 
 Spider_DouYin_Videos 是一个强大的抖音视频爬虫工具，专门用于批量下载指定抖音用户的公开视频内容。本工具采用现代化的爬虫技术，确保稳定性和高效性，遇到问题优先排查是否cookie失效
 只作为研究所用，切勿用于商业行为！！
